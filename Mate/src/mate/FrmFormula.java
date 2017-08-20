@@ -5,6 +5,11 @@
  */
 package mate;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,16 +28,29 @@ public class FrmFormula extends javax.swing.JFrame {
     public FrmFormula() {
         initComponents();
         setLocationRelativeTo(null);
-        this.setSize(458, 180);
+        this.setSize(458, 162);
+        load();
     }
 
+    private void load(){
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File("fondo.jpg"));
+        } catch (Exception e) {
+        }
+        Image dimg = img.getScaledInstance(lblFondo.getWidth(), lblFondo.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(dimg);
+        lblFondo.setIcon(imageIcon);
+    }
+    
     private void calcular() {
         String resultado = "";
         a = Integer.parseInt(sA.getValue().toString());
         b = Integer.parseInt(sB.getValue().toString());
         c = Integer.parseInt(sC.getValue().toString());
         double determinante = Math.pow(b, 2) - (4 * a * c); //discriminante
-        double eje = ((-b) / 2 * a); //eje de simetría y vertice x
+        double eje = -b; //eje de simetría y vertice x
+        eje /= (2 * a);
         double y = ((-determinante) / 4 * a); // vertice en y
 
         if (a < 0) {
@@ -41,20 +59,21 @@ public class FrmFormula extends javax.swing.JFrame {
             resultado += "Concava hacia abajo\n";
         }
 
-        if (determinante > 0) {
+        if (determinante >= 0) {
             resultado += "El discriminante es: " + determinante + "\n";
             double x1 = ((b * (-1)) + Math.sqrt(determinante)) / (2 * a);
             double x2 = ((b * (-1)) - Math.sqrt(determinante)) / (2 * a);
-            resultado += "Cortes en X:  x1 = " + x1 + " X2= " + x2 + "\n";
-        } else {
-            resultado += "El determinante es negativo y no se puede completar la operacion\n";
-            resultado += "Corte en el eje Y es= 0" + ","+c + "\n";
+            resultado += "Cortes en X:  x1 = " + x1 + " x2= " + x2 + "\n";
+            resultado += "Corte en el eje Y es= (0" + ","+c + ")\n";
             resultado += "Dominio = R\n";
             resultado += "Codominio = R\n";
-            resultado += "Eje de simetría es: " + eje + " , " + y + "\n";
-            resultado += "El punto máximo es: " + y + " , " + eje + "\n";
+            resultado += "Eje de simetría es: " + eje+ "\n";
+            resultado += "El punto máximo es: (" + y + " , " + eje + ")\n";
             resultado += "Crece: [-∞, " + eje + "]\n";
             resultado += "Decrece: [" + eje +", " + "+∞]";
+        }else{
+            resultado += "El determinante es negativo y no se puede completar la operacion\n";
+            resultado += "Pertenece a los números reales.";
         }
         this.setSize(458, 420);
         txtResultados.setText(resultado);
@@ -76,42 +95,56 @@ public class FrmFormula extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        btnCalcular = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResultados = new javax.swing.JTextArea();
+        lblFondo = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        btnCalcular = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel1.setForeground(new java.awt.Color(0, 153, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Ecuación cuadratica");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(10, 18, 431, 32);
 
         sA.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        sA.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        sA.setModel(new javax.swing.SpinnerNumberModel());
+        getContentPane().add(sA);
+        sA.setBounds(121, 56, 62, 24);
 
         sB.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        sB.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        sB.setModel(new javax.swing.SpinnerNumberModel());
+        getContentPane().add(sB);
+        sB.setBounds(215, 56, 60, 24);
 
         sC.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        sC.setModel(new javax.swing.SpinnerNumberModel(0, 0, 100, 1));
+        sC.setModel(new javax.swing.SpinnerNumberModel());
+        getContentPane().add(sC);
+        sC.setBounds(307, 56, 64, 24);
 
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 153, 255));
         jLabel2.setText("a:");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(107, 56, 10, 18);
 
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 153, 255));
         jLabel3.setText("b:");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(201, 59, 10, 18);
 
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 153, 255));
         jLabel4.setText("c:");
-
-        btnCalcular.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
-        btnCalcular.setText("Calcular");
-        btnCalcular.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCalcularActionPerformed(evt);
-            }
-        });
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(293, 59, 10, 18);
 
         txtResultados.setEditable(false);
         txtResultados.setColumns(20);
@@ -120,58 +153,58 @@ public class FrmFormula extends javax.swing.JFrame {
         txtResultados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Comic Sans MS", 0, 12))); // NOI18N
         jScrollPane1.setViewportView(txtResultados);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(108, Short.MAX_VALUE))
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(10, 150, 431, 236);
+        getContentPane().add(lblFondo);
+        lblFondo.setBounds(0, 140, 450, 260);
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 115));
+
+        btnCalcular.setBackground(new java.awt.Color(0, 153, 255));
+        btnCalcular.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        btnCalcular.setForeground(new java.awt.Color(0, 0, 115));
+        btnCalcular.setText("Calcular");
+        btnCalcular.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularActionPerformed(evt);
+            }
+        });
+
+        btnLimpiar.setBackground(new java.awt.Color(0, 153, 255));
+        btnLimpiar.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
+        btnLimpiar.setForeground(new java.awt.Color(0, 0, 115));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(125, 125, 125)
+                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(86, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(0, 0, 450, 140);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -179,6 +212,13 @@ public class FrmFormula extends javax.swing.JFrame {
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
         calcular();
     }//GEN-LAST:event_btnCalcularActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        txtResultados.setText("");
+        sA.setValue(0);
+        sB.setValue(0);
+        sC.setValue(0);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,11 +257,14 @@ public class FrmFormula extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalcular;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblFondo;
     private javax.swing.JSpinner sA;
     private javax.swing.JSpinner sB;
     private javax.swing.JSpinner sC;
